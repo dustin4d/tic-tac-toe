@@ -2,6 +2,15 @@
 const Gameboard = (() => {
     let score
 
+    const buildBoard = () => {
+        /* Create all 9 DOM td nodes
+         * and append them to tr
+         * elements. Give the td cells
+         * the class .tile
+         */
+        console.log("Board constructed.")
+    }
+
     const board = [
         "X", "X", "X",
         "O", "O", "O",
@@ -9,8 +18,8 @@ const Gameboard = (() => {
     ]
 
     // Gameboard exports
-    return {}
-})
+    return {buildBoard, board}
+})()
 
 
 // Player Object
@@ -32,7 +41,7 @@ const Player = (() => {
 
     // Player exports
     return {}
-})
+})()
 
 
 // CPU Object
@@ -51,4 +60,4 @@ const Cpu = (() => {
     // CPU Exports
     return {}
 
-})
+})()
