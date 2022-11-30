@@ -1,30 +1,46 @@
 // Gameboard Object
 const Gameboard = (() => {
     let score
+    
+    // Tile eventListener
+    const tile = document.querySelectorAll('.tile')
+    console.log(tile)
 
+   const board = []
+    
     const buildBoard = () => {
-        /* Create all 9 DOM td nodes
-         * and append them to tr
-         * elements. Give the td cells
-         * the class .tile
+        /* Create all 9 DOM nodes as divs
+         * and append them to .board
          */
-        console.log("Board constructed.")
+        for (i = 0; i < 9; i++) {
+            
+        }
     }
 
-    const board = [
-        "X", "X", "X",
-        "O", "O", "O",
-        "X", "X", "X"
-    ]
+    const mark = (team) => {
+        /* Grab the player's or CPU's team
+        * indentifier (X or O), then write that value
+        * to the array index that corresponds to the DOM
+        * node that was clicked.
+        */
+    }
+
+    const arrayLink = () => {
+        /* Associate each array index to the DOM
+         * 0  1  2
+         * 3  4  5
+         * 6  7  8
+        */
+    }
 
     // Gameboard exports
-    return {buildBoard, board}
+    return {buildBoard, board, tile}
 })()
 
 
 // Player Object
 const Player = (() => {
-    const team = pickTeam()
+    let team
 
     const pickTeam = () => {
         /* Get value of a DOM node,
@@ -33,20 +49,14 @@ const Player = (() => {
          * is returned from this function */
     }
 
-    const mark = () => {
-        /* Click DOM element, check Player's
-         * team, and insert text into array index 
-         * that corresponds to player's team choice */
-    }
-
     // Player exports
-    return {}
+    return {team}
 })()
 
 
 // CPU Object
 const Cpu = (() => {
-    let team = oppositeTeam()
+    //let team = oppositeTeam()
 
     // Picks the symbol of whatever is not picked by Player
     const oppositeTeam = () => {
