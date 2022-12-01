@@ -18,6 +18,12 @@
     background-color: lightblue;
 }
 
-:hover .tile > * {
-    background-color: red;
+#coinflip-button {
+    text-align: center;
+    margin: 0 auto;
+    margin-top: 40px;
+    width: 300px;
+    border: 1px solid black;
+    font-size: 2rem;
+    background-color: lightgrey;
 }
