@@ -8,6 +8,8 @@ const Controller = (() => {
          * change the classlist on that element to show it */
     }
 
+    
+
     const assignTeam = () => {
         // Random number between 0 and 1
         const coin = Math.floor(Math.random() * 2)
@@ -40,18 +42,18 @@ const Controller = (() => {
 // Gameboard Object
 const Gameboard = (() => {
     const tiles = document.querySelectorAll('.tile')
-
-    const mapArray = () => {
-        for (let i = 0; i < tiles.length; i++) {
-            tiles[i].addEventListener('click', () => {console.log("WOO")})
-        }
-    }
     
-
     const board = ['X', 'X', 'X',
                    'O', 'O', 'O',
-                   'X', 'X', 'X'
-                ]
+                   'X', 'X', 'X']
+
+    // Map board array's data into the DOM board element
+    const mapArray = () => {
+        for (let i = 0; i < tiles.length; i++) {
+            tiles[i].textContent = board[i]
+        }
+    }
+
     // Gameboard exports
     return {board, tiles, mapArray}
 })()
