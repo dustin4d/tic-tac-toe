@@ -1,76 +1,44 @@
-const Controller = (() => {
-    const coinflipBtn = document.querySelector('#coinflip-button')
-    // Invoke the function with arrow syntax
-    coinflipBtn.addEventListener('click', () => {assignTeam()})
-
-    const showBoard = () => {
-        /* Board is hidden by default, and this function should
-         * change the classlist on that element to show it */
-    }
-
-    
-
-    const assignTeam = () => {
-        // Random number between 0 and 1
-        const coin = Math.floor(Math.random() * 2)
-        console.log(`Flipping coin...`)
-        console.log(`Coin value is ${coin}`)
-
-        if (coin === 0) {
-            Player.team = 'X'
-            Cpu.team = 'O'
-            hideButton()
-        } else if (coin === 1) {
-            Player.team = 'O'
-            Cpu.team = 'X'
-            hideButton()
-        } else {
-            console.log("Error")
-            alert("Error")
-        }
-
-    }
-
-    const hideButton = () => {
-        coinflipBtn.remove()
-    }
-
-    // Controller Exports
-    return {assignTeam}
-})()
-
-// Gameboard Object
+//// GAMEBOARD OBJECT
 const Gameboard = (() => {
-    const tiles = document.querySelectorAll('.tile')
-    
-    const board = ['X', 'X', 'X',
-                   'O', 'O', 'O',
-                   'X', 'X', 'X']
+    const board = []
 
-    // Map board array's data into the DOM board element
-    const mapArray = () => {
-        for (let i = 0; i < tiles.length; i++) {
-            tiles[i].textContent = board[i]
-        }
+    const writeTile = () => {
+        /* Set a given iteration of the board array
+         * to the given sign (Two arguments?)
+         */
     }
 
-    // Gameboard exports
-    return {board, tiles, mapArray}
+    // Retreive the data from a given index
+    const getTile = (index) => {
+        /* Just return the index in the board array
+         * for it to give the data, since we aren't 
+         * writing anything */
+        return board[index]
+    }
+
 })()
 
-// Player Object
-const Player = (() => {
-    let team
+
+//// PLAYER OBJECT
+/**
+ * Stole this idea from Michal Osman, just create a constructor for 2 players, even
+ * if one of them is going to be a CPU, then we can assign two instances of
+ * Player.team later.
+ */
+const Player = (team) => {
+    this.team = team
+
+    // Make a way to publicly reveal the team of Player
+    const getTeam = () => {
+        return team
+    }
 
     // Player exports
-    return {team}
-})()
+    return {getTeam}
+}
 
-// CPU Object
-const Cpu = (() => {
-    let team
-    
-    // CPU Exports
-    return {team}
+//// GAME CONTROLLER OBJECT
+const gameController = () => {
 
-})()
+}
+
