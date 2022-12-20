@@ -1,11 +1,19 @@
 //// GAMEBOARD OBJECT
 const Gameboard = (() => {
-    const board = []
+    const board = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X']
 
-    const writeTile = () => {
-        /* Set a given iteration of the board array
+    // Set each index programmatically, to set or reset the board.
+    const setBoard = () => {
+        for (let i = 0; i < 9; i++) {
+            board.push('')
+        }
+    }
+
+    const writeTile = (index, team) => {
+        /* Set a given index of the board array
          * to the given sign (Two arguments?)
          */
+        board[index] = team
     }
 
     // Retreive the data from a given index
@@ -16,8 +24,8 @@ const Gameboard = (() => {
         return board[index]
     }
 
+    return {board}
 })()
-
 
 //// PLAYER OBJECT
 /**
@@ -38,7 +46,16 @@ const Player = (team) => {
 }
 
 //// GAME CONTROLLER OBJECT
-const gameController = () => {
 
-}
 
+//// Display Controller Object
+const displayController = (() => {
+    // Draw array contents to tiles
+    const tiles = document.querySelectorAll('.tile')
+
+    tiles.forEach((tile, index) => {
+        console.log(Gameboard.board[index])
+        tile.textContent = Gameboard.board[index]
+    })
+
+})()
