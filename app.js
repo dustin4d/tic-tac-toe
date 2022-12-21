@@ -63,34 +63,39 @@ const gameController = (() => {
         }
     }
 
-    return {determineTeams}
+    return {determineTeams, localPlayer, aiPlayer}
 })()
 
 //// Display Controller Object
 const displayController = (() => {
     const tiles = document.querySelectorAll('.tile')
-    const teamChoice = document.querySelectorAll('.team-choice')
+    const teamButtons = document.querySelectorAll(".team-choice")
 
-    /* This var just holds the player's choice, but gets passed to 
-     * `gameController` later for team assignment */
     let playerChoice
+
+    const getPlayerSign = (choice) => {
+        playerChoice = choice
+        console.log(`playerChoice is now: ${playerChoice}`)
+        return playerChoice
+    }
 
     // Populate the board with array data
     tiles.forEach((tile, index) => {
         tile.textContent = Gameboard.board[index]
     })
 
-    /* Loop through the array, and save the player's choice, which 
-     * gets passed to the `gameController` object to determine teams */
-    teamChoice.forEach((choice) => {
-        console.log(choice)
-        choice.addEventListener("click", () => {
-           console.log(`Player chose team: ${choice.outerText}`)
-           playerChoice = choice.outerText
+    teamButtons.forEach((button) => {
+        if(button.innerText == "X") {
+            button.addEventListener("click", () => {
+                getPlayerSign("X")
         })
-       choice.addEventListener("click", gameController.determineTeams)
+        } else if (button.innerText == "O") {
+            button.addEventListener("click", () => {
+                getPlayerSign("O")
+            })
+        }
     })
 
-    // displayController Exports
+   // displayController Exports
     return {playerChoice}
 })()

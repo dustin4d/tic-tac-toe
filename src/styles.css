@@ -2,13 +2,29 @@
     box-sizing: border-box;
 }
 
-.board {
-    display: grid;
+.wrap {
     margin: 0 auto;
+    max-width: 500px;
+}
+
+.teams {
+    width: max-content;
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+
+.team-choice {
+    width: 3rem;
+    height: 3rem;
+
+}
+
+.board {
+    margin: 0 auto;
+    display: grid;
     width:max-content;
     grid-template-columns: repeat(3, 1fr);
     border: 2px solid black;
-    visibility: hidden;
 }
 
 .tile {
@@ -17,14 +33,4 @@
     height: 100px;
     border: 1px solid black;
     background-color: lightblue;
-}
-
-#coinflip-button {
-    text-align: center;
-    margin: 0 auto;
-    margin-top: 40px;
-    width: 300px;
-    border: 1px solid black;
-    font-size: 2rem;
-    background-color: lightgrey;
 }
