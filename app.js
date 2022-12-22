@@ -1,7 +1,6 @@
 //// GAMEBOARD OBJECT
 const Gameboard = (() => {
-    const board = ['X', 'O', 'X', 'O', 'X', 'O', 'X', 'O', 'X']
-
+    const board = ['', '', '', '', '', '', '', '', '', '']
     // Set each index programmatically, to set or reset the board.
     const setBoard = () => {
         for (let i = 0; i < 9; i++) {
@@ -52,18 +51,18 @@ const gameController = (() => {
 
     // Pulls data from the button player clicked and assigns teams
     const determineTeams = () => {
-        if(displayController.playerChoice === 'X') {
-            console.log(`Player sign: ${playerChoice}`)
+        if(displayController.passPlayerSign === 'X') {
             localPlayer = Player("X")
             aiPlayer = Player("O")
+            console.log(`localPlayer: ${localPlayer}`)
         } else if (displayController.playerChoice === 'O') {
-            console.log(`Player sign: ${playerChoice}`)
             localPlayer = Player("O")
             aiPlayer = Player("X")
+            console.log(`aiPlayer: ${aiPlayer}`)
         }
     }
 
-    return {determineTeams, localPlayer, aiPlayer}
+    return {determineTeams}
 })()
 
 //// Display Controller Object
@@ -73,29 +72,48 @@ const displayController = (() => {
 
     let playerChoice
 
-    const getPlayerSign = (choice) => {
+    const attachEventListeners = () => {
+        teamButtons.forEach((button) => {
+        if(button.innerText == "X") {
+            button.addEventListener("click", () => {
+                setPlayerSign("X")
+                gameController.determineTeams()
+        })
+        } else if (button.innerText == "O") {
+            button.addEventListener("click", () => {
+                setPlayerSign("O")
+                gameController.determineTeams()
+            })
+        }
+        })
+    }
+
+    // Populate the board with array data
+    const updateBoard = () => {
+        tiles.forEach((tile, index) => {
+            tile.textContent = Gameboard.board[index]
+            tile.addEventListener("click", () => {
+                tile.textContent = playerChoice
+            })
+        })
+    }
+ 
+    const setPlayerSign = (choice) => {
         playerChoice = choice
         console.log(`playerChoice is now: ${playerChoice}`)
         return playerChoice
     }
 
-    // Populate the board with array data
-    tiles.forEach((tile, index) => {
-        tile.textContent = Gameboard.board[index]
-    })
+    const getPlayerSign = () => {
+        return playerChoice
+    }
 
-    teamButtons.forEach((button) => {
-        if(button.innerText == "X") {
-            button.addEventListener("click", () => {
-                getPlayerSign("X")
-        })
-        } else if (button.innerText == "O") {
-            button.addEventListener("click", () => {
-                getPlayerSign("O")
-            })
-        }
-    })
+    
+    attachEventListeners()
+    updateBoard()
 
    // displayController Exports
-    return {playerChoice}
+    return {
+        getPlayerSign
+    }
 })()
