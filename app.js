@@ -108,8 +108,12 @@ const displayController = (() => {
         }
         })
         playBtn.addEventListener("click", () => {
-            modalContainer.style.display = "none"
-            wrapper.style.display = "block"
+            if (playerChoice !== "X" && playerChoice !== "O" ) {
+                console.log("Pick a team, please")
+            } else {
+                modalContainer.style.display = "none"
+                wrapper.style.display = "block"
+            }
         })
     }
 
@@ -138,5 +142,5 @@ const displayController = (() => {
     updateBoard()
 
    // displayController Exports
-    return {getPlayerSign, closeBtn}
+    return {getPlayerSign}
 })()
