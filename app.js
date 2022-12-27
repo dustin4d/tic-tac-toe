@@ -66,7 +66,21 @@ const gameController = (() => {
 
     // Decide who plays on round 1.
     const coinflip = () => {
+        let coin = Math.random()
+        if(coin > 0.5) {
+            coin = "Heads"
+            if (coin === "Heads") {
+                console.log("Heads! Player goes first.")
+                displayController.setMessage("Heads! Player goes first.")
+            }
+        } else if (coin < 0.5) {
+            coin = "Tails"
+            if (coin === "Tails") {
+                console.log("Tails! AI goes first.")
+                displayController.setMessage("Tails! AI goes first.")
 
+            }
+        }
     }
 
     // Run this after a tile is clicked
@@ -75,7 +89,7 @@ const gameController = (() => {
     }
 
     // Game Controller Exports
-    return {determineTeams, playRound}
+    return {determineTeams, playRound, coinflip}
 })()
 
 //// Display Controller Object
@@ -86,7 +100,7 @@ const displayController = (() => {
     const closeBtn = document.querySelector('.closeBtn')
     const playBtn = document.querySelector('.playBtn')
     const wrapper = document.querySelector('.wrap')
-
+    const messageContainer = document.querySelector('.message')
 
     let playerChoice
 
@@ -111,6 +125,7 @@ const displayController = (() => {
             if (playerChoice !== "X" && playerChoice !== "O" ) {
                 console.log("Pick a team, please")
             } else {
+                gameController.coinflip()
                 modalContainer.style.display = "none"
                 wrapper.style.display = "block"
             }
@@ -125,6 +140,10 @@ const displayController = (() => {
                 tile.textContent = playerChoice
             })
         })
+    }
+
+    const setMessage = (message) => {
+        messageContainer.innerText = message
     }
 
     const setPlayerSign = (choice) => {
@@ -142,5 +161,5 @@ const displayController = (() => {
     updateBoard()
 
    // displayController Exports
-    return {getPlayerSign}
+    return {getPlayerSign, setMessage}
 })()
