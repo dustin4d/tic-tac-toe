@@ -49,6 +49,8 @@ const gameController = (() => {
     let localPlayer
     let aiPlayer
 
+    let round = 1
+
     // Pulls data from the button player clicked and assigns teams
     const determineTeams = () => {
         if(displayController.passPlayerSign === 'X') {
@@ -62,16 +64,35 @@ const gameController = (() => {
         }
     }
 
-    return {determineTeams}
+    // Decide who plays on round 1.
+    const coinflip = () => {
+
+    }
+
+    // Run this after a tile is clicked
+    const playRound = (tileIndex) => {
+        Gameboard.writeTile(tileIndex, currentPlayer)
+    }
+
+    // Game Controller Exports
+    return {determineTeams, playRound}
 })()
 
 //// Display Controller Object
 const displayController = (() => {
     const tiles = document.querySelectorAll('.tile')
     const teamButtons = document.querySelectorAll(".team-choice")
+    const modalContainer = document.querySelector('.modal-container')
+    const closeBtn = document.querySelector('.closeBtn')
+    const playBtn = document.querySelector('.playBtn')
+    const wrapper = document.querySelector('.wrap')
+
 
     let playerChoice
 
+    /* Buttons that start the game.
+     * After the "Play" button is clicked, hide the 
+     * modal, showing the game board */
     const attachEventListeners = () => {
         teamButtons.forEach((button) => {
         if(button.innerText == "X") {
@@ -86,6 +107,10 @@ const displayController = (() => {
             })
         }
         })
+        playBtn.addEventListener("click", () => {
+            modalContainer.style.display = "none"
+            wrapper.style.display = "block"
+        })
     }
 
     // Populate the board with array data
@@ -97,7 +122,7 @@ const displayController = (() => {
             })
         })
     }
- 
+
     const setPlayerSign = (choice) => {
         playerChoice = choice
         console.log(`playerChoice is now: ${playerChoice}`)
@@ -113,7 +138,5 @@ const displayController = (() => {
     updateBoard()
 
    // displayController Exports
-    return {
-        getPlayerSign
-    }
+    return {getPlayerSign, closeBtn}
 })()
