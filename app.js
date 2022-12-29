@@ -9,9 +9,6 @@ const Gameboard = (() => {
     }
 
     const writeTile = (index, team) => {
-        /* Set a given index of the board array
-         * to the given sign (Two arguments?)
-         */
         board[index] = team
     }
 
@@ -48,6 +45,7 @@ const Player = (team) => {
 const gameController = (() => {
     let localPlayer
     let aiPlayer
+    let currentPlayer
 
     let round = 1
 
@@ -57,7 +55,7 @@ const gameController = (() => {
             localPlayer = Player("X")
             aiPlayer = Player("O")
             console.log(`localPlayer: ${localPlayer}`)
-        } else if (displayController.playerChoice === 'O') {
+        } else if (displayController.passPlayerSign === 'O') {
             localPlayer = Player("O")
             aiPlayer = Player("X")
             console.log(`aiPlayer: ${aiPlayer}`)
@@ -69,16 +67,17 @@ const gameController = (() => {
         let coin = Math.random()
         if(coin > 0.5) {
             coin = "Heads"
+            currentPlayer = localPlayer
             if (coin === "Heads") {
-                console.log("Heads! Player goes first.")
                 displayController.setMessage("Heads! Player goes first.")
+                console.log(currentPlayer)
             }
         } else if (coin < 0.5) {
             coin = "Tails"
+            currentPlayer = aiPlayer
             if (coin === "Tails") {
-                console.log("Tails! AI goes first.")
                 displayController.setMessage("Tails! AI goes first.")
-
+                console.log(currentPlayer)
             }
         }
     }
@@ -86,10 +85,21 @@ const gameController = (() => {
     // Run this after a tile is clicked
     const playRound = (tileIndex) => {
         Gameboard.writeTile(tileIndex, currentPlayer)
+
+        if (currentPlayer === "X") {
+            currentPlayer = "O"
+        } else {
+            currentPlayer = "X"
+        }
+    }
+
+    const checkSign = () => {
+        const result = console.log(`localPlayer = ${localPlayer}, aiPlayer = ${aiPlayer}`)
+        return result
     }
 
     // Game Controller Exports
-    return {determineTeams, playRound, coinflip}
+    return {determineTeams, playRound, coinflip, currentPlayer, checkSign}
 })()
 
 //// Display Controller Object
@@ -97,7 +107,6 @@ const displayController = (() => {
     const tiles = document.querySelectorAll('.tile')
     const teamButtons = document.querySelectorAll(".team-choice")
     const modalContainer = document.querySelector('.modal-container')
-    const closeBtn = document.querySelector('.closeBtn')
     const playBtn = document.querySelector('.playBtn')
     const wrapper = document.querySelector('.wrap')
     const messageContainer = document.querySelector('.message')
@@ -136,8 +145,11 @@ const displayController = (() => {
     const updateBoard = () => {
         tiles.forEach((tile, index) => {
             tile.textContent = Gameboard.board[index]
+
             tile.addEventListener("click", () => {
                 tile.textContent = playerChoice
+                console.log(`${playerChoice} marked a tile.`)
+                console.log(`Returned from gameController.currentPlayer: ${gameController.currentPlayer}`)
             })
         })
     }
@@ -148,10 +160,11 @@ const displayController = (() => {
 
     const setPlayerSign = (choice) => {
         playerChoice = choice
-        console.log(`playerChoice is now: ${playerChoice}`)
+        console.log(`displayController.setPlayerSign: ${playerChoice}`)
         return playerChoice
     }
 
+    // A way to pass the player sign to other modules
     const getPlayerSign = () => {
         return playerChoice
     }
