@@ -29,7 +29,7 @@ const Gameboard = (() => {
  * if one of them is going to be a CPU, then we can assign two instances of
  * Player.team later.
  */
-const Player = (team) => {
+function Player(team) {
     this.team = team
 
     // Make a way to publicly reveal the team of Player
@@ -45,61 +45,44 @@ const Player = (team) => {
 const gameController = (() => {
     let localPlayer
     let aiPlayer
-    let currentPlayer
+    let currentPlayer = 'init'
 
     let round = 1
 
     // Pulls data from the button player clicked and assigns teams
     const determineTeams = () => {
-        if(displayController.passPlayerSign === 'X') {
+        if(displayController.getPlayerSign() === 'X') {
             localPlayer = Player("X")
             aiPlayer = Player("O")
-            console.log(`localPlayer: ${localPlayer}`)
-        } else if (displayController.passPlayerSign === 'O') {
+        } else if (displayController.getPlayerSign() === 'O') {
             localPlayer = Player("O")
             aiPlayer = Player("X")
-            console.log(`aiPlayer: ${aiPlayer}`)
         }
     }
 
     // Decide who plays on round 1.
     const coinflip = () => {
-        let coin = Math.random()
-        if(coin > 0.5) {
-            coin = "Heads"
+        let coin = Math.random() > 0.5 ? "Heads" : "Tails"
+        if (coin === "Heads") {
             currentPlayer = localPlayer
-            if (coin === "Heads") {
-                displayController.setMessage("Heads! Player goes first.")
-                console.log(currentPlayer)
-            }
-        } else if (coin < 0.5) {
-            coin = "Tails"
-            currentPlayer = aiPlayer
-            if (coin === "Tails") {
-                displayController.setMessage("Tails! AI goes first.")
-                console.log(currentPlayer)
-            }
-        }
-    }
-
-    // Run this after a tile is clicked
-    const playRound = (tileIndex) => {
-        Gameboard.writeTile(tileIndex, currentPlayer)
-
-        if (currentPlayer === "X") {
-            currentPlayer = "O"
+            console.log(`currentPlayer is: ${currentPlayer}`)
+            displayController.setMessage("Heads. Player goes first.")
+            return currentPlayer
         } else {
-            currentPlayer = "X"
+            currentPlayer = aiPlayer
+            console.log(`currentPlayer is: ${currentPlayer}`)
+            displayController.setMessage("Tails. AI goes first.")
+            return currentPlayer
         }
     }
 
-    const checkSign = () => {
-        const result = console.log(`localPlayer = ${localPlayer}, aiPlayer = ${aiPlayer}`)
-        return result
-    }
+    // TODO!!!!
+    /* Fix how the game alternates from one player to the other and changes
+     * players based on the round increasing
+     */
 
     // Game Controller Exports
-    return {determineTeams, playRound, coinflip, currentPlayer, checkSign}
+    return {determineTeams, coinflip, currentPlayer}
 })()
 
 //// Display Controller Object
@@ -147,9 +130,7 @@ const displayController = (() => {
             tile.textContent = Gameboard.board[index]
 
             tile.addEventListener("click", () => {
-                tile.textContent = playerChoice
-                console.log(`${playerChoice} marked a tile.`)
-                console.log(`Returned from gameController.currentPlayer: ${gameController.currentPlayer}`)
+                tile.textContent = gameController.coinflip().getTeam()
             })
         })
     }
@@ -160,7 +141,6 @@ const displayController = (() => {
 
     const setPlayerSign = (choice) => {
         playerChoice = choice
-        console.log(`displayController.setPlayerSign: ${playerChoice}`)
         return playerChoice
     }
 
