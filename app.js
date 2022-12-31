@@ -65,7 +65,7 @@ const gameController = (() => {
         let coin = Math.random() > 0.5 ? "Heads" : "Tails"
         if (coin === "Heads") {
             currentPlayer = localPlayer
-            console.log(`currentPlayer is: ${currentPlayer}`)
+            console.log(`currentPlayer is: ${currentPlayer.getTeam()}`)
             displayController.setMessage("Heads. Player goes first.")
             return currentPlayer
         } else {
@@ -80,9 +80,17 @@ const gameController = (() => {
     /* Fix how the game alternates from one player to the other and changes
      * players based on the round increasing
      */
+    const playRound = (tileIndex) => {
+        console.log(currentPlayer.getTeam())
+        Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
+        displayController.updateBoard()
+
+        currentPlayer = (currentPlayer === localPlayer) ? aiPlayer : localPlayer
+        round++
+    }
 
     // Game Controller Exports
-    return {determineTeams, coinflip, currentPlayer}
+    return {determineTeams, coinflip, currentPlayer, playRound}
 })()
 
 //// Display Controller Object
@@ -113,6 +121,7 @@ const displayController = (() => {
             })
         }
         })
+
         playBtn.addEventListener("click", () => {
             if (playerChoice !== "X" && playerChoice !== "O" ) {
                 console.log("Pick a team, please")
@@ -122,16 +131,18 @@ const displayController = (() => {
                 wrapper.style.display = "block"
             }
         })
+
+        tiles.forEach((tile, index) => {
+            tile.addEventListener("click", () => {
+                gameController.playRound(index)
+            })
+        })
     }
 
     // Populate the board with array data
     const updateBoard = () => {
         tiles.forEach((tile, index) => {
-            tile.textContent = Gameboard.board[index]
-
-            tile.addEventListener("click", () => {
-                tile.textContent = gameController.coinflip().getTeam()
-            })
+            tile.textContent = Gameboard.getTile(index)
         })
     }
 
@@ -151,8 +162,7 @@ const displayController = (() => {
 
     
     attachEventListeners()
-    updateBoard()
 
    // displayController Exports
-    return {getPlayerSign, setMessage}
+    return {getPlayerSign, setMessage, updateBoard}
 })()
