@@ -76,16 +76,21 @@ const gameController = (() => {
         }
     }
 
-    // TODO!!!!
-    /* Fix how the game alternates from one player to the other and changes
-     * players based on the round increasing
-     */
+    // This function is run after a tile is clicked.
     const playRound = (tileIndex) => {
         console.log(currentPlayer.getTeam())
         Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
         displayController.updateBoard()
 
-        currentPlayer = (currentPlayer === localPlayer) ? aiPlayer : localPlayer
+        // Alternate player turns
+        if (currentPlayer === localPlayer) {
+            currentPlayer = aiPlayer
+            displayController.setMessage(`It's AI's turn.`)
+        } else {
+            currentPlayer = localPlayer
+            displayController.setMessage(`It's your turn.`)
+        }
+
         round++
     }
 
