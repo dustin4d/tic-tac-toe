@@ -24,11 +24,7 @@ const Gameboard = (() => {
 })()
 
 //// PLAYER OBJECT
-/**
- * Stole this idea from Michal Osman, just create a constructor for 2 players, even
- * if one of them is going to be a CPU, then we can assign two instances of
- * Player.team later.
- */
+// Simple constructor to make a player object to set and reveal Player sign
 function Player(team) {
     this.team = team
 
@@ -45,9 +41,9 @@ function Player(team) {
 const gameController = (() => {
     let localPlayer
     let aiPlayer
-    let currentPlayer = 'init'
+    let currentPlayer
 
-    let round = 1
+    let round = 0
 
     // Pulls data from the button player clicked and assigns teams
     const determineTeams = () => {
@@ -76,6 +72,21 @@ const gameController = (() => {
         }
     }
 
+    // From @michalosman on GitHub
+    // Much shorter than tons of if/else statements
+    const checkWinner = (tileIndex) => {
+        const winConditions = [
+            [0, 1, 2],
+            [3, 4, 5],
+            [6, 7, 8], 
+            [0, 3, 6],
+            [1, 4, 7],
+            [2, 5, 8],
+            [0, 4, 8],
+            [2, 4, 6]
+        ]
+    }
+
     // This function is run after a tile is clicked.
     const playRound = (tileIndex) => {
         console.log(currentPlayer.getTeam())
@@ -91,7 +102,12 @@ const gameController = (() => {
             displayController.setMessage(`It's your turn.`)
         }
 
+        // TODO: Check winner after each player's click
+
         round++
+        if (round === 9) {
+            displayController.setMessage("Game over.")
+        }
     }
 
     // Game Controller Exports
