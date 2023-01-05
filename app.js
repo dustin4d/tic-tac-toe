@@ -85,12 +85,20 @@ const gameController = (() => {
             [0, 4, 8],
             [2, 4, 6]
         ]
+
+        // .filter(), .some, etc
+        return winConditions
+            .filter((combination) => combination.includes(tileIndex))
+            .some((possibleCombination) => possibleCombination.every((index) => Gameboard.getTile(index) === currentPlayer.getTeam()))
     }
 
     // This function is run after a tile is clicked.
     const playRound = (tileIndex) => {
         console.log(currentPlayer.getTeam())
         Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
+        if (checkWinner(tileIndex)) {
+            console.log("Game is over")
+        }
         displayController.updateBoard()
 
         // Alternate player turns
@@ -111,7 +119,7 @@ const gameController = (() => {
     }
 
     // Game Controller Exports
-    return {determineTeams, coinflip, currentPlayer, playRound}
+    return {determineTeams, coinflip, currentPlayer, playRound, checkWinner}
 })()
 
 //// Display Controller Object
