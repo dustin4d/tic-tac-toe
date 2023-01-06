@@ -42,6 +42,7 @@ const gameController = (() => {
     let localPlayer
     let aiPlayer
     let currentPlayer
+    let gameOver = false
 
     let round = 0
 
@@ -94,27 +95,32 @@ const gameController = (() => {
 
     // This function is run after a tile is clicked.
     const playRound = (tileIndex) => {
-        console.log(currentPlayer.getTeam())
-        Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
-        if (checkWinner(tileIndex)) {
-            console.log("Game is over")
+        // Check if tile has already been set, or if game is over.
+        if (Gameboard.getTile(tileIndex) !== "" || gameOver) {
+            return
         }
+
+        Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
+
+        if (checkWinner(tileIndex)) {
+            displayController.setMessage("Game over, pal.")
+            // Disable clicks on tiles after game is over
+            gameOver = true
+        }
+
         displayController.updateBoard()
 
         // Alternate player turns
         if (currentPlayer === localPlayer) {
             currentPlayer = aiPlayer
-            displayController.setMessage(`It's AI's turn.`)
         } else {
             currentPlayer = localPlayer
-            displayController.setMessage(`It's your turn.`)
         }
-
-        // TODO: Check winner after each player's click
 
         round++
         if (round === 9) {
             displayController.setMessage("Game over.")
+            gameOver = true
         }
     }
 
