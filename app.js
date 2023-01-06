@@ -103,7 +103,8 @@ const gameController = (() => {
         Gameboard.writeTile(tileIndex, currentPlayer.getTeam())
 
         if (checkWinner(tileIndex)) {
-            displayController.setMessage("Game over, pal.")
+            const winningPlayer = currentPlayer.getTeam() === "X" ? "X" : "O"
+            displayController.setMessage(`Game Over. ${winningPlayer} wins!`)
             // Disable clicks on tiles after game is over
             gameOver = true
         }
